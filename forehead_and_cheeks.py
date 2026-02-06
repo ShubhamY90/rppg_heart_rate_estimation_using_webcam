@@ -1,5 +1,8 @@
 import cv2
 import mediapipe as mp
+import os
+import urllib.request
+
 import numpy as np
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
@@ -13,6 +16,19 @@ GLASSES_THRESHOLD = 0.15      # if more than 15% non-skin in eye region → glas
 # ==============================
 # Load Face Landmarker
 # ==============================
+
+
+MODEL_URL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
+MODEL_PATH = "face_landmarker.task"
+
+def ensure_model():
+    if not os.path.exists(MODEL_PATH):
+        print("Downloading MediaPipe face landmark model...")
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+        print("Download complete.")
+
+ensure_model()
+
 base_options = python.BaseOptions(
     model_asset_path="face_landmarker.task"
 )
