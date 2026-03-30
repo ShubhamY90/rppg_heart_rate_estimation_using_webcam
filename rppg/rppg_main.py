@@ -13,19 +13,21 @@ sys.path.insert(0, PROJECT_ROOT)
 
 from forehead_and_cheeks import get_rois
 from buffer import SignalBuffer
-#from chrom import chrom_signal
 from signal_processing import bandpass_filter, estimate_bpm
 
 # ==============================
-# CONFIG (TUNED)
+# CONFIG (IMPROVED)
 # ==============================
-WINDOW_SECONDS = 10
+WINDOW_SECONDS = 15          # Increased for better frequency resolution
 FPS_INIT = 30
 MIN_PIXELS = 50
 
-BPM_UPDATE_INTERVAL = 1.0   # seconds
-MAX_BPM_JUMP = 8            # physiological constraint
-BPM_SMOOTHING = 5           # moving average length
+BPM_UPDATE_INTERVAL = 1.0
+MAX_BPM_JUMP = 8
+BPM_SMOOTHING = 5
+
+LOW_CUT = 0.7                # Expanded slightly
+HIGH_CUT = 3.5
 
 # ==============================
 # INIT
@@ -50,7 +52,7 @@ while True:
     rois = get_rois(frame)
 
     # ==============================
-    # FPS ESTIMATION (ROBUST)
+    # FPS ESTIMATION
     # ==============================
     now = time.time()
     timestamps.append(now)
@@ -73,38 +75,58 @@ while True:
             buffer.append(R, G, B)
 
     # ==============================
-    # BPM COMPUTATION (STABILIZED)
+    # BPM COMPUTATION
     # ==============================
     if buffer.ready() and fs > 5:
         if time.time() - last_bpm_time >= BPM_UPDATE_INTERVAL:
+
             R, G, B = buffer.get()
 
-            # --- 1. Normalize RGB ---
+            # ------------------------------
+            # 1. Normalize RGB (mean-based)
+            # ------------------------------
             rgb = np.vstack([R, G, B]).T
             rgb = rgb / (np.mean(rgb, axis=0) + 1e-6)
 
-            # --- 2. POS algorithm ---
+            # ------------------------------
+            # 2. POS Algorithm
+            # ------------------------------
             X = 3 * rgb[:, 0] - 2 * rgb[:, 1]
             Y = 1.5 * rgb[:, 0] + rgb[:, 1] - 1.5 * rgb[:, 2]
 
             alpha = np.std(X) / (np.std(Y) + 1e-6)
             pos_signal = X - alpha * Y
 
-            # --- 3. Detrend ---
+            # ------------------------------
+            # 3. Remove DC + Normalize
+            # ------------------------------
             pos_signal -= np.mean(pos_signal)
             pos_signal /= (np.std(pos_signal) + 1e-6)
 
-            # --- 4. Bandpass (physiological range) ---
+            # ------------------------------
+            # 4. Bandpass Filter
+            # ------------------------------
             filtered = bandpass_filter(
                 pos_signal,
                 fs,
-                low=0.75,
-                high=3.0
+                low=LOW_CUT,
+                high=HIGH_CUT
             )
 
+            # ------------------------------
+            # 5. Estimate BPM
+            # ------------------------------
             bpm = estimate_bpm(filtered, fs)
 
-            # --- 5. Physiological constraint ---
+            # ------------------------------
+            # 6. Harmonic Correction
+            # ------------------------------
+            if bpm < 55:
+                bpm *= 2
+
+            # ------------------------------
+            # 7. Physiological Constraint
+            # ------------------------------
             if last_bpm is not None:
                 bpm = np.clip(
                     bpm,
@@ -115,6 +137,7 @@ while True:
             bpm_history.append(bpm)
             last_bpm = np.mean(bpm_history)
             last_bpm_time = time.time()
+
     # ==============================
     # DISPLAY
     # ==============================

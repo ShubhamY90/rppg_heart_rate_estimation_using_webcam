@@ -137,7 +137,7 @@ def get_rois(frame):
 
     # Position between nose and left face edge
     left_cheek_x = eye_center[0] - 0.30 * face_width
-    left_cheek_y = nose_tip[1] + 0.10 * face_height  # Below nose level
+    left_cheek_y = nose_tip[1] - 0.07 * face_height  # Below nose level
 
     left_cheek_rect = (
         (left_cheek_x, left_cheek_y),
@@ -157,7 +157,7 @@ def get_rois(frame):
 
     # Position between nose and right face edge
     right_cheek_x = eye_center[0] + 0.30 * face_width
-    right_cheek_y = nose_tip[1] + 0.10 * face_height  # Below nose level
+    right_cheek_y = nose_tip[1] - 0.07 * face_height  # nose level
 
     right_cheek_rect = (
         (right_cheek_x, right_cheek_y),
