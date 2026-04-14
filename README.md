@@ -1,4 +1,4 @@
-# 💓 rPPG Heart Rate Estimation via Webcam
+# rPPG Heart Rate Estimation via Webcam
 
 > Real-time, contact-free heart rate measurement using Remote Photoplethysmography (rPPG) — directly from a standard webcam, powered by a 3-branch adaptive fusion pipeline combining classical signal processing, a custom-trained LSTM, and the RhythmFormer transformer model.
 
