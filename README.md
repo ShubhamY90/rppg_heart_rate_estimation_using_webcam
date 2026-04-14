@@ -373,7 +373,7 @@ Press **Q** to quit.
 #### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam
 cd ROI
 ```
 
@@ -429,7 +429,7 @@ Go to **System Settings → Privacy & Security → Camera** and make sure your t
 #### 1. Clone the repository
 
 ```cmd
-git clone <your-repo-url>
+git clone https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam
 cd ROI
 ```
 
