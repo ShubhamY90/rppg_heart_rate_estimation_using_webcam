@@ -374,7 +374,7 @@ Press **Q** to quit.
 
 ```bash
 git clone https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam
-cd ROI
+
 ```
 
 #### 2. Create and activate a virtual environment
@@ -430,7 +430,7 @@ Go to **System Settings → Privacy & Security → Camera** and make sure your t
 
 ```cmd
 git clone https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam
-cd ROI
+
 ```
 
 #### 2. Create and activate a virtual environment
