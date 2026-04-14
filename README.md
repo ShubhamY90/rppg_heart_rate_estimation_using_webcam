@@ -505,5 +505,9 @@ Windows may show a camera permission dialog the first time. If the camera access
 - Wang, W. et al. (2017). *Algorithmic Principles of Remote PPG*. IEEE TBME.
 - De Haan, G. & Jeanne, V. (2013). *Robust Pulse Rate From Chrominance-Based rPPG*. IEEE TBME.
 - RhythmFormer: *Extracting rPPG Signals Based on Hierarchical Temporal Periodic Transformer*. (UBFC-rPPG weights used with permission / public release).
+- X. Zhang, Z. Zhang, Y. Wang, M. Wang and B. W. -K. Ling, "An End-to-End Non-Contact Heart Rate Estimation Method Based on Facial        Videos via Continuous Tracking Model," in IEEE Transactions on Consumer Electronics, vol. 72, no. 1, pp. 1205-1207, Feb. 2026, doi:     10.1109/TCE.2025.3650004.
+keywords: {Heart rate;Feature extraction;Estimation;Videos;Skin;Monitoring;Training;Lighting;Facial features;Accuracy;rPPG;heart rate estimation;ROI detection;continuous tracking},
+
+
 - UBFC-rPPG Dataset: Bobbia et al., *Unsupervised skin tissue segmentation for remote photoplethysmography*, Pattern Recognition Letters, 2019.
 - MediaPipe FaceLandmarker: Google LLC. https://developers.google.com/mediapipe
