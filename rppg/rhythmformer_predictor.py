@@ -112,8 +112,9 @@ class Attention3D(nn.Module):
             nn.BatchNorm3d(dim), nn.ReLU()
         )
         # proj_v checkpoint key: proj_v.0.weight → must be Sequential
+        # bias=False to match checkpoint (no proj_v.0.bias key)
         self.proj_v = nn.Sequential(
-            nn.Conv3d(dim, dim, 1)
+            nn.Conv3d(dim, dim, 1, bias=False)
         )
 
     def forward(self, x):
@@ -129,18 +130,27 @@ class Attention3D(nn.Module):
 class MLP3D(nn.Module):
     def __init__(self, dim=64, hidden=96):
         super().__init__()
-        self.net = nn.Sequential(
-            nn.Conv3d(dim, hidden, 1),
-            nn.BatchNorm3d(hidden), nn.GELU(),
-            nn.Conv3d(hidden, hidden, 3, padding=1,
-                      groups=hidden),
-            nn.BatchNorm3d(hidden), nn.GELU(),
-            nn.Conv3d(hidden, dim, 1),
-            nn.BatchNorm3d(dim), nn.GELU(),
-        )
+        # Layers named 0..7 directly (no .net wrapper)
+        # to match checkpoint keys: mlp.0, mlp.1, ..., mlp.7
+        self[0]  = nn.Conv3d(dim, hidden, 1)       # 0
+        self[1]  = nn.BatchNorm3d(hidden)           # 1
+        self[2]  = nn.GELU()                        # 2  (no params)
+        self[3]  = nn.Conv3d(hidden, hidden, 3,
+                             padding=1, groups=1)  # 3  (full conv, not depthwise)
+        self[4]  = nn.BatchNorm3d(hidden)           # 4
+        self[5]  = nn.GELU()                        # 5  (no params)
+        self[6]  = nn.Conv3d(hidden, dim, 1)        # 6
+        self[7]  = nn.BatchNorm3d(dim)              # 7
+        self[8]  = nn.GELU()                        # 8  (no params)
+
+    def __setitem__(self, idx, module):
+        setattr(self, str(idx), module)
 
     def forward(self, x):
-        return self.net(x) + x
+        out = x
+        for i in range(9):
+            out = getattr(self, str(i))(out)
+        return out + x
 
 
 class TransformerBlock(nn.Module):
