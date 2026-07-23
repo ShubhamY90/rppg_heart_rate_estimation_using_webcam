@@ -23,6 +23,10 @@
 
 ---
 
+📄 **Technical Report:**  
+**[Read the complete project report (PDF)](https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam/blob/main/rppg_heartrate_estimation.pdf)**
+
+
 ## Overview
 
 This project estimates **heart rate (BPM) in real time** from webcam video without any contact sensor. It is based on the physiological principle that the subtle colour changes in skin caused by pulsating blood flow can be captured by a camera — this is called **remote photoplethysmography (rPPG)**.
