@@ -2,6 +2,10 @@
 
 > Real-time, contact-free heart rate measurement using Remote Photoplethysmography (rPPG) — directly from a standard webcam, powered by a 3-branch adaptive fusion pipeline combining classical signal processing, a custom-trained LSTM, and the RhythmFormer transformer model.
 
+📄 **Technical Report:**  
+**[Read the complete project report (PDF)](https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam/blob/main/rppg_heartrate_estimation.pdf)**
+
+
 ---
 
 ## 📋 Table of Contents
@@ -22,9 +26,6 @@
 10. [Known Notes & Tips](#known-notes--tips)
 
 ---
-
-📄 **Technical Report:**  
-**[Read the complete project report (PDF)](https://github.com/ShubhamY90/rppg_heart_rate_estimation_using_webcam/blob/main/rppg_heartrate_estimation.pdf)**
 
 
 ## Overview
